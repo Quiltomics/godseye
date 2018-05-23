@@ -34,8 +34,8 @@ The main idea is to optimally segment the yearly data into smaller contiguous ti
 ## Contact
 You are welcome to:
 
-* submit suggestions and bug-reports at: <https://github.com/Bohdan-Khomtchouk/godseye/issues>
-* send a pull request on: <https://github.com/Bohdan-Khomtchouk/godseye>
+* submit suggestions and bug-reports at: <https://github.com/Bioquilt/godseye/issues>
+* send a pull request on: <https://github.com/Bioquilt/godseye>
 * compose an e-mail to: <bohdan@stanford.edu>
 
 ## Code of conduct
