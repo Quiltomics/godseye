@@ -16,7 +16,7 @@ Bioinformatics is one of the [fastest growing interdisciplinary fields](http://s
 Using keyword prominence and an efficient temporal segmentation algorithm, our method highlights trending topics in the bioinformatics literature, and can be helpful in predicting the ever-changing demands of the bioinformatics job market.
 
 ### Data Sources
-We used the NCBI MEDLINE®/PubMed® database and bioRxiv® database to extract all titles, abstracts, and author affiliations of all published papers and preprints, respectively.
+We quilted together the NCBI MEDLINE®/PubMed® database and bioRxiv® database to extract all titles, abstracts, and author affiliations of all published papers and preprints, respectively.
 
 ### Algorithms
 #### Keyword prominence in a time range
