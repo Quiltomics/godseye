@@ -57,7 +57,7 @@ class BioTrend:
 		return decomp
 
 
-	def calcNumPap(self):
+	def calcNumPap(self):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  (self):
 		"""
 		Calculate the total number of papers per year
 		"""
@@ -117,7 +117,7 @@ class BioTrend:
 		"""
 		Extract the items in the segment whose relative
 		frequency is above self.alpha
-		"""
+		"""	
 		totals = sum(Counter(timePoint) for timePoint in segment)
 		## extract the items whose relative frequency is >= self.alpha
 		total = float(sum(totals.values()))
