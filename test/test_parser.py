@@ -23,7 +23,7 @@ class Mainparser:
                                           else {e.tag: e.text for e in el}
                     for el in node.getchildren()}
                     for node in neighbor.getchildren()}
-            
+
             if neighbor.text:
                 yield n, sub
 
@@ -38,7 +38,7 @@ class Mainparser:
 
 if __name__ == '__main__':
     MP = Mainparser(xfn='../../godseye-files/medline15n0778.xml',
-                    jfn='articles.json')
+                    jfn='../../godseye-files/articles.json')
 
     MP.create_json()
 
