@@ -23,7 +23,7 @@ class Mainparser:
                                           else {e.tag: e.text for e in el}
                     for el in node.getchildren()}
                     for node in neighbor.getchildren()}
-            
+
             if neighbor.text:
                 yield n, sub
 
