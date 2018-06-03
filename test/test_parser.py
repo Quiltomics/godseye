@@ -37,8 +37,8 @@ class Mainparser:
 
 
 if __name__ == '__main__':
-    MP = Mainparser(xfn='../../godseye-files/medline15n0778.xml',
-                    jfn='articles.json')
+    MP = Mainparser(xfn='../godseye-files/pubmed18n0001.xml',
+                    jfn='../godseye-files/articles.json')
 
     MP.create_json()
 
