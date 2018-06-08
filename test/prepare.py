@@ -16,8 +16,11 @@ class CreateDatabase:
             print(sqlite3.version)
         except LiteError as e:
             print(e)
-        finally:
-            conn.close()
+            # raise
+        else:
+            return conn
+        # finally:
+        #    conn.close()
 
     def json_parser(self):
         with open(self.json_path) as f:
