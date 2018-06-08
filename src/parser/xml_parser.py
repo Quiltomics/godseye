@@ -34,13 +34,3 @@ class Mainparser:
         the = self.create_dict()
         with codecs.open(self.json_file_name, 'w', encoding='UTF-8') as f:
             json.dump(the, f, indent=4)
-
-
-if __name__ == '__main__':
-    MP = Mainparser(xfn='../../godseye-files/medline15n0778.xml',
-                    jfn='articles.json')
-
-    MP.create_json()
-
-
-
