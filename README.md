@@ -18,6 +18,9 @@ Using keyword prominence and an efficient temporal segmentation algorithm, our m
 ### Data Sources
 We quilted together the NCBI MEDLINE®/PubMed® database and bioRxiv® database to extract all titles, abstracts, and author affiliations of all published papers and preprints, respectively.
 
+### Impact
+By including bioRxiv, `godseye` can monitor the pulse of the biological research community with a delay of several days at most, which is the average time it takes for a preprint to be publicly displayed on bioRxiv upon submission.  In contrast, PubMed's delay is at least 3-18 months, which is often the time range of the lengthy peer-review cycle.  Once a preprint is published in a peer-reviewed journal and thereby available on PubMed, `godseye` delegates to the PubMed resource for extracting information from the abstract/title (since these are often updated relative to the bioRxiv version of the paper).  
+
 ### Algorithms
 #### Keyword prominence in a time range
 We define the prominence of a keyword _w_ as the fraction of journal abstracts in a given time range that contain the keyword _w_. An arbitrary parameter _α_ is then chosen to filter out keywords whose prominence is _<_ _α_.
