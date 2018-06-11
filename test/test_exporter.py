@@ -31,25 +31,23 @@ class CreateDatabase:
                                         country text,
                                         created_date text
                                     ); """
-        conn = self.create_connection()                           
-        cur = conn.cursor()
-        cur.execute(sql_create_table)
-        conn.commit()
-        conn.close()
+        conn = self.create_connection()
+        with conn:                          
+            cur = conn.cursor()
+            cur.execute(sql_create_table)
     
     def insert(self):
         sql_insert = """ INSERT INTO article (keywords, country,
         created_date) VALUES ('{}', '{}', '{}')
         """
         conn = self.create_connection()
-        cur = conn.cursor()
-        for keywords, country, date in self.extract_keywords():
-            query = sql_insert.format("-".join(keywords),
-                                      country,
-                                      "-".join(date.values()))
-            cur.execute(query)
-        conn.commit()
-        conn.close()
+        with conn:
+            cur = conn.cursor()
+            for keywords, country, date in self.extract_keywords():
+                query = sql_insert.format("-".join(keywords),
+                                          country,
+                                          "-".join(date.values()))
+                cur.execute(query)
 
     def json_parser(self):
         """extract required info from json file and pass it to
