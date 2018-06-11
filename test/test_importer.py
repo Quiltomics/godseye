@@ -3,7 +3,7 @@
 import sqlite3 as lite
 from sqlite3 import Error as LiteError
 import pandas as pd
-
+from datetime import datetime
 
 class Importer:
     def __init__(self, *args, **kwargs):
@@ -28,9 +28,11 @@ class Importer:
         cur = self._connection.cursor()
         df = pd.DataFrame.from_records(cur.execute(query.format(*columns)),
                                        columns=columns)
+        df['keywords'] = df['keywords'].apply(lambda x: x.split('-'))
         return df
 
 
 if __name__ == "__main__":
     CD = Importer(database_name="../godseye-files/database.db")
-    CD.extract()
+    df = CD.create_dataframe()
+    print(df)
