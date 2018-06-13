@@ -3,22 +3,25 @@ import matplotlib.pyplot as plt
 import datetime
 import matplotlib.dates as mdates
 import matplotlib.cbook as cbook
+from test_importer import Importer
+import test_config as config
+
 
 
 class Visualizer:
     def __init__(self, *args, **kwargs):
-        pass
-    
-    def cumulative_histogram(self):
-        mu = 200
-        sigma = 25
-        n_bins = 50
-        x = np.random.normal(mu, sigma, size=100)
+        self.dataframe = _importer.create_dataframe()
 
-        fig, ax = plt.subplots(figsize=(40, 20))
+    def cumulative_histogram(self, **kwargs):
+        iterable = np.sort(kwargs['iterable'])
+        mu = iterable[0]
+        sigma = iterable[-1]
+        n_bins = kwargs['n_bins']
+
+        fig, ax = plt.subplots(figsize=config.FIGSIZE)
 
         # plot the cumulative histogram
-        n, bins, patches = ax.hist(x, n_bins, density=True, histtype='step',
+        n, bins, patches = ax.hist(iterable, n_bins, density=True, histtype='step',
                                 cumulative=True, label='Empirical')
 
         # Add a line showing the expected distribution.
@@ -29,16 +32,13 @@ class Visualizer:
 
         ax.plot(bins, y, 'k--', linewidth=1.5, label='Theoretical')
 
-        # Overlay a reversed cumulative histogram.
-        ax.hist(x, bins=bins, density=True, histtype='step', cumulative=-1,
-                label='Reversed emp.')
-
         # tidy up the figure
         ax.grid(True)
         ax.legend(loc='right')
         ax.set_title('Cumulative step histograms')
-        ax.set_xlabel('Annual rainfall (mm)')
-        ax.set_ylabel('Likelihood of occurrence')
+        
+        ax.set_xlabel(kwargs.get('xlable'))
+        ax.set_ylabel(kwargs.get('ylable'))
 
         plt.show()
 
@@ -124,3 +124,16 @@ class Visualizer:
 
         fig.tight_layout()
         plt.show()
+
+
+if __name__ == '__main__':
+    db_path = config.HOME_DIR + "/godseye-files/database.db"
+    _importer = Importer(database_name=db_path)
+    dataframe = _importer.create_dataframe()
+    print(dataframe)
+    VZ = Visualizer(dataframe=dataframe)
+
+    VZ.cumulative_histogram(iterable=np.arange(100),
+                            n_bins=10,
+                            xlable='number of occurrence',
+                            ylable='Likelihood of occurrence')
