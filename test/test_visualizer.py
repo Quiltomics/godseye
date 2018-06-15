@@ -3,14 +3,13 @@ import matplotlib.pyplot as plt
 import datetime
 import matplotlib.dates as mdates
 import matplotlib.cbook as cbook
-from test_importer import Importer
 import test_config as config
 
 
 
 class Visualizer:
     def __init__(self, *args, **kwargs):
-        self.dataframe = _importer.create_dataframe()
+        pass
 
     def cumulative_histogram(self, **kwargs):
         iterable = np.sort(kwargs['iterable'])
@@ -125,15 +124,3 @@ class Visualizer:
         fig.tight_layout()
         plt.show()
 
-
-if __name__ == '__main__':
-    db_path = config.HOME_DIR + "/godseye-files/database.db"
-    _importer = Importer(database_name=db_path)
-    dataframe = _importer.create_dataframe()
-    print(dataframe)
-    VZ = Visualizer(dataframe=dataframe)
-
-    VZ.cumulative_histogram(iterable=np.arange(100),
-                            n_bins=10,
-                            xlable='number of occurrence',
-                            ylable='Likelihood of occurrence')
