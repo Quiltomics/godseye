@@ -29,6 +29,7 @@ class Importer:
         df = pd.DataFrame.from_records(cur.execute(query.format(*columns)),
                                        columns=columns)
         df['keywords'] = df['keywords'].apply(lambda x: x.split('-'))
+        df['created_date'] = df['created_date'].apply(pd.to_datetime)
         return df
 
 
