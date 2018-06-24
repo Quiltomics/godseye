@@ -37,6 +37,7 @@ class Visualizer:
         ax.grid(True)
         ax.legend(loc='right')
         ax.set_title('Cumulative step histograms')
+        ax.xaxis.set_major_locator(ticker.FixedLocator(kwargs['years']))
         ax.set_xticks(kwargs.get('xticks'))
         ax.set_xlabel(kwargs.get('xlable'))
         ax.set_ylabel(kwargs.get('ylable'))
