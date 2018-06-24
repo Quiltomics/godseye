@@ -20,20 +20,30 @@ class Run:
         def func(args):
             return Counter(chain.from_iterable(args))
 
-
         x_iterable = groupby_year.groups.keys()
         counter_grouped = groupby_year.agg(func)
 
         y_iterable = [d[word] for d in counter_grouped.keywords]
+        print(y_iterable)
         n_bins = counter_grouped.size
+        self.visualizer.cumulative_histogram(
+            iterable=y_iterable,
+            n_bins=n_bins,
+            xticks=x_iterable,
+            years=x_iterable,
+            x_label="Years",
+            y_label="Keyword Frequency"
+        )
+        """
         self.visualizer.one_line(word,
                                  x=x_iterable,
                                  y=y_iterable,
+                                 xticks=x_iterable,
                                  x_label="Years",
                                  y_label="Keyword Frequency")
-
+        """
 
 
 if __name__ == '__main__':
     run = Run()
-    run.histogram_dates('cancer')
+    run.histogram_dates('protein')
