@@ -8,11 +8,9 @@ import sys
 
 class CreateDatabase:
     def __init__(self, *args, **kwargs):
-        self.factor = 0
         self.json_path = kwargs['json_path']
         self.database_name = kwargs['database_name']
         self.words_regex = re.compile(r"\b\w+\b")
-        self._connection = self.create_connection()
 
     def create_connection(self):
         """ create a database connection to a SQLite database """
@@ -33,19 +31,23 @@ class CreateDatabase:
                                         country text,
                                         created_date text
                                     ); """
-        cur = self._connection.cursor()
-        cur.execute(sql_create_table)
-
+        conn = self.create_connection()
+        with conn:                          
+            cur = conn.cursor()
+            cur.execute(sql_create_table)
+    
     def insert(self):
         sql_insert = """ INSERT INTO article (keywords, country,
         created_date) VALUES ('{}', '{}', '{}')
         """
-        cur = self._connection.cursor()
-        for keywords, country, date in self.extract_keywords():
-            query = sql_insert.format("-".join(keywords),
-                                      country,
-                                      "-".join(date.values()))
-            cur.execute(query)
+        conn = self.create_connection()
+        with conn:
+            cur = conn.cursor()
+            for keywords, country, date in self.extract_keywords():
+                query = sql_insert.format("-".join(keywords),
+                                          country,
+                                          "-".join(date.values()))
+                cur.execute(query)
 
     def json_parser(self):
         """extract required info from json file and pass it to
@@ -82,3 +84,12 @@ class CreateDatabase:
     def run(self):
         self.create_tables()
         self.insert()
+
+
+
+
+if __name__ == "__main__":
+    CD = CreateDatabase(json_path='../godseye-files/articles.json',
+                        database_name="../godseye-files/database.db")
+    
+    CD.run()
