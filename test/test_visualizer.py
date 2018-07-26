@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import datetime
+from datetime import datetime
 import matplotlib.dates as mdates
 import matplotlib.cbook as cbook
 import test_config as config
-
+import pandas as pd
+import matplotlib.ticker as ticker
 
 
 class Visualizer:
@@ -14,6 +15,7 @@ class Visualizer:
     def cumulative_histogram(self, **kwargs):
         iterable = np.sort(kwargs['iterable'])
         mu = iterable[0]
+
         sigma = iterable[-1]
         n_bins = kwargs['n_bins']
 
@@ -35,34 +37,30 @@ class Visualizer:
         ax.grid(True)
         ax.legend(loc='right')
         ax.set_title('Cumulative step histograms')
-        
+        ax.xaxis.set_major_locator(ticker.FixedLocator(kwargs['years']))
+        ax.set_xticks(kwargs.get('xticks'))
         ax.set_xlabel(kwargs.get('xlable'))
         ax.set_ylabel(kwargs.get('ylable'))
 
         plt.show()
 
-    def date_tick_labels(self):
-        years = mdates.YearLocator()   # every year
-        months = mdates.MonthLocator()  # every month
-        yearsFmt = mdates.DateFormatter('%Y')
+    def date_tick_labels(self, **kwargs):
+        years = sorted(kwargs['x_iterable'])
+        months = kwargs.get('month')
+        #yearsFmt = mdates.DateFormatter('%Y')
 
-        # Load a numpy record array from yahoo csv data with fields date, open, close,
-        # volume, adj_close from the mpl-data/example directory. The record array
-        # stores the date as an np.datetime64 with a day unit ('D') in the date column.
-        with cbook.get_sample_data('goog.npz') as datafile:
-            r = np.load(datafile)['price_data'].view(np.recarray)
 
         fig, ax = plt.subplots()
-        ax.plot(r.date, r.adj_close)
+        ax.plot(years, kwargs['y_iterable'])
 
         # format the ticks
-        ax.xaxis.set_major_locator(years)
-        ax.xaxis.set_major_formatter(yearsFmt)
-        ax.xaxis.set_minor_locator(months)
+        ax.xaxis.set_major_locator(ticker.FixedLocator(kwargs['x_iterable']))
+        #ax.xaxis.set_major_formatter(yearsFmt)
+        # ax.xaxis.set_minor_locator(months)
 
         # round to nearest years...
-        datemin = np.datetime64(r.date[0], 'Y')
-        datemax = np.datetime64(r.date[-1], 'Y') + np.timedelta64(1, 'Y')
+        datemin = years[0]
+        datemax = years[-1] + 1
         ax.set_xlim(datemin, datemax)
 
 
@@ -75,7 +73,7 @@ class Visualizer:
 
         # rotates and right aligns the x labels, and moves the bottom of the
         # axes up to make room for them
-        fig.autofmt_xdate()
+        #fig.autofmt_xdate()
 
         plt.show()
     
@@ -90,13 +88,13 @@ class Visualizer:
 
         plt.show()
 
-    def one_line(self, x, y, x_label='x label', y_label='y label'):
-        with plt.style.context('Solarize_Light'):
-            plt.plot(x, y)
-            plt.title("{} Lines".format(len(args)))
-            plt.xlabel(x_label, fontsize=14)
-            plt.ylabel(y_label, fontsize=14)
-        plt.show()
+    def one_line(self, word, x, y, x_label='x label', y_label='y label'):
+
+        plt.plot(x, y)
+        plt.title("Use of keyword {} over years".format(word))
+        plt.xlabel(x_label, fontsize=14)
+        plt.ylabel(y_label, fontsize=14)
+        plt.savefig("godseye-plasma.png")
 
     def coherence(self):
         # Fixing random state for reproducibility
@@ -123,4 +121,3 @@ class Visualizer:
 
         fig.tight_layout()
         plt.show()
-
