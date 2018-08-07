@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 def Scatter_Masked(*args):
     # Fixing random state for reproducibility
