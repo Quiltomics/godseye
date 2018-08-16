@@ -8,6 +8,7 @@ import pandas as pd
 
 class Run:
     def __init__(self, *args, **kwargs):
+        # the name should come from config file.
         _db_path = config.HOME_DIR + "/godseye-files/database.db"
         _importer = Importer(database_name=_db_path)
         self.dataframe = _importer.create_dataframe()
