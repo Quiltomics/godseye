@@ -9,7 +9,7 @@ class Mainparser:
     def __init__(self, *args, **kwargs):
         self.json_file_name = kwargs['jfn']
         self.xml_file_name = kwargs['xfn']
-
+    
     def parse_journals(self):
         def looper(iterable):
             for node in iterable:
