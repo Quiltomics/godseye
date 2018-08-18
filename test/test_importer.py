@@ -4,6 +4,8 @@ import sqlite3 as lite
 from sqlite3 import Error as LiteError
 import pandas as pd
 from datetime import datetime
+from test_utils import clean_data
+
 
 class Importer:
     def __init__(self, *args, **kwargs):
@@ -22,6 +24,7 @@ class Importer:
         # finally:
             # conn.close()
 
+    @clean_data
     def create_dataframe(self):
         columns = ('keywords', 'country', 'created_date')
         query = """ SELECT {}, {}, {} FROM article """
