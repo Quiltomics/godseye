@@ -16,7 +16,7 @@ class Analyzer:
         return _match
     
     def return_country(keyword):
-        """Return the contries of the papers that mtched
+        """Return the countries of the papers that mtched
         with input keyword."""
         _match = self.filter(keyword)
         return _match['country']
