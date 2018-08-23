@@ -35,14 +35,6 @@ class Run:
             x_label="Years",
             y_label="Keyword Frequency"
         )
-        """
-        self.visualizer.one_line(word,
-                                 x=x_iterable,
-                                 y=y_iterable,
-                                 xticks=x_iterable,
-                                 x_label="Years",
-                                 y_label="Keyword Frequency")
-        """
 
 
 if __name__ == '__main__':
