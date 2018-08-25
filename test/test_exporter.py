@@ -4,6 +4,10 @@ from sqlite3 import Error as LiteError
 import nltk
 import re
 import sys
+import glob
+import test_config
+from os import path as ospath
+
 
 
 class CreateDatabase:
@@ -49,12 +53,10 @@ class CreateDatabase:
                                           "-".join(date.values()))
                 cur.execute(query)
 
-    def json_parser(self):
+    def json_parser(self, data):
         """extract required info from json file and pass it to
         extract_keywords function."""
 
-        with open(self.json_path) as f:
-            data = json.load(f)
         data = data["PubmedArticleSet"]["PubmedArticle"]
         for d in data:
             article = d['MedlineCitation']["Article"]
@@ -69,9 +71,18 @@ class CreateDatabase:
                 abstract = abstract['#text']
             yield jtitle, atitle, abstract, country, date
 
+    def parse_all(self):
+        """iteratively parse json files within json_path directory."""
+
+        for file_name in glob.glob(self.json_path + "*.json"):
+            with open(file_name) as f:
+                data = json.load(f)
+                yield from self.json_parser(data)
+
     def extract_keywords(self):
         """Extracts keywords for each article."""
-        for *args, country, date in self.json_parser():
+        
+        for *args, country, date in self.parse_all():
             try:
                 words = nltk.pos_tag(self.words_regex.findall(" ".join(args)))
             except:
@@ -80,7 +91,8 @@ class CreateDatabase:
             # unique words in each article
             keywords = {word for word, tag in words if tag == "NN"}
             yield keywords, country, date
-            
+    
+
     def run(self):
         self.create_tables()
         self.insert()
@@ -89,7 +101,7 @@ class CreateDatabase:
 
 
 if __name__ == "__main__":
-    CD = CreateDatabase(json_path='../godseye-files/articles.json',
-                        database_name="../godseye-files/database.db")
+    CD = CreateDatabase(json_path= ospath.join(test_config.HOME_DIR, 'godseye-files/json/'),
+                        database_name=ospath.join(test_config.HOME_DIR, "godseye-files/database.db"))
     
     CD.run()
