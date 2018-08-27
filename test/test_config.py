@@ -17,3 +17,8 @@ KEYWORDS = (
     "angina",
     "arrhythmia",
 )
+
+FILE_TYPE_KEY = {
+    "pubmed": ("PubmedArticleSet", "PubmedArticle"),
+    "medline": "MedlineCitationSet"
+}
