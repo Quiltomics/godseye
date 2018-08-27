@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 import xmltodict
 from os import path as ospath
 import test_config
-
+import glob
 
 
 class Mainparser:
@@ -33,24 +33,28 @@ class Mainparser:
     def create_dict(self):
         return OrderedDict(self.parse_journals())
 
-    def create_jsons(self):
-        for dictionary in self.xml_to_json():
-            with codecs.open(self.json_path, 'w', encoding='UTF-8') as f:
-                json.dump(dictionary, f, indent=4)
+    def create_jsons(self, dictionary, name):
+        with codecs.open(ospath.join(self.json_path, name), 'w', encoding='UTF-8') as f:
+            json.dump(dictionary, f, indent=4)
 
     def xml_to_json(self):
-        for name in glob.glob(self.xml_path):
+        for name in glob.glob(self.xml_path + "/*.xml"):
             with open(name) as f:
                 d = xmltodict.parse(f.read())
-            yield d
+            print("Finished {}".format(name))
+            yield d, ospath.basename(name).split('.')[0] + '.json'
     
     def run(self):
+        for dictionary, name in self.xml_to_json():
+            self.create_jsons(dictionary, name)
 
 
 if __name__ == '__main__':
-    MP = Mainparser(xfn=ospath.join(test_config.HOME_DIR, 'godseye-files/pubmed18n0001.xml'),
-                    jfn=ospath.join(test_config.HOME_DIR, 'godseye-files/articles.json'))
+    MP = Mainparser(
+        xml_path=ospath.join(test_config.HOME_DIR, 'godseye-files/xml'),
+        json_path=ospath.join(test_config.HOME_DIR, 'godseye-files/json')
+        )
 
     # d = MP.create_dict()
     d = MP.xml_to_json()
-    MP.create_json(d)
+    MP.run()
