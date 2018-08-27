@@ -40,14 +40,14 @@ class CreateDatabase:
             cur = conn.cursor()
             cur.execute(sql_create_table)
     
-    def insert(self):
+    def insert(self, data):
         sql_insert = """ INSERT INTO article (keywords, country,
         created_date) VALUES ('{}', '{}', '{}')
         """
         conn = self.create_connection()
         with conn:
             cur = conn.cursor()
-            for keywords, country, date in self.extract_keywords():
+            for keywords, country, date in self.extract_keywords(data):
                 query = sql_insert.format("-".join(keywords),
                                           country,
                                           "-".join(date.values()))
@@ -56,9 +56,8 @@ class CreateDatabase:
     def json_parser(self, data):
         """extract required info from json file and pass it to
         extract_keywords function."""
-
-        data = data["PubmedArticleSet"]["PubmedArticle"]
         for d in data:
+            print("***")
             article = d['MedlineCitation']["Article"]
             date = d['MedlineCitation']["DateCompleted"]
             jtitle = article["Journal"]["Title"]
@@ -75,14 +74,22 @@ class CreateDatabase:
         """iteratively parse json files within json_path directory."""
 
         for file_name in glob.glob(self.json_path + "*.json"):
+            print("Parsing {}".format(file_name))
+            name = ospath.basename(file_name)
             with open(file_name) as f:
                 data = json.load(f)
-                yield from self.json_parser(data)
+                if name.startswith("medline"):
+                    k = test_config.FILE_TYPE_KEY['medline']
+                    data = data[k]
+                elif name.startswith("pubmed"):
+                    k1, k2 = test_config.FILE_TYPE_KEY['pubmed']
+                    data = data[k1][k2]
+                yield self.json_parser(data)
 
-    def extract_keywords(self):
+    def extract_keywords(self, data):
         """Extracts keywords for each article."""
         
-        for *args, country, date in self.parse_all():
+        for *args, country, date in data:
             try:
                 words = nltk.pos_tag(self.words_regex.findall(" ".join(args)))
             except:
@@ -91,11 +98,12 @@ class CreateDatabase:
             # unique words in each article
             keywords = {word for word, tag in words if tag == "NN"}
             yield keywords, country, date
-    
+
 
     def run(self):
         self.create_tables()
-        self.insert()
+        for data in self.parse_all():
+            self.insert(data)
 
 
 
