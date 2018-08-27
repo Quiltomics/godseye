@@ -18,3 +18,5 @@ class Article(Document):
     
     def search(self, query):
         pass
+
+
