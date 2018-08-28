@@ -53,11 +53,10 @@ class CreateDatabase:
                                           "-".join(date.values()))
                 cur.execute(query)
 
-    def json_parser(self, data):
+    def parse_pubmed(self, data):
         """extract required info from json file and pass it to
         extract_keywords function."""
         for d in data:
-            print("***")
             article = d['MedlineCitation']["Article"]
             date = d['MedlineCitation']["DateCompleted"]
             jtitle = article["Journal"]["Title"]
@@ -70,6 +69,22 @@ class CreateDatabase:
                 abstract = abstract['#text']
             yield jtitle, atitle, abstract, country, date
 
+    def parse_medline(self, data):
+        """extract required info from json file and pass it to
+        extract_keywords function."""
+        for d in data:
+            article = d["Article"]
+            date = d["DateCompleted"]
+            jtitle = article["Journal"]["Title"]
+            atitle = article["ArticleTitle"]
+            abstract = article.get("Abstract",{"AbstractText":''})["AbstractText"]
+            country = d["MedlineJournalInfo"]["Country"]
+            if isinstance(abstract, list):
+                    abstract = '-'.join([a.get('#text', '') for a in abstract])
+            elif isinstance(abstract, dict):
+                abstract = abstract.get('#text', '')
+            yield jtitle, atitle, abstract, country, date
+
     def parse_all(self):
         """iteratively parse json files within json_path directory."""
 
@@ -79,12 +94,13 @@ class CreateDatabase:
             with open(file_name) as f:
                 data = json.load(f)
                 if name.startswith("medline"):
-                    k = test_config.FILE_TYPE_KEY['medline']
-                    data = data[k]
+                    k1, k2 = test_config.FILE_TYPE_KEY['medline']
+                    data = data[k1][k2]
+                    yield self.parse_medline(data)
                 elif name.startswith("pubmed"):
                     k1, k2 = test_config.FILE_TYPE_KEY['pubmed']
                     data = data[k1][k2]
-                yield self.json_parser(data)
+                    yield self.parse_pubmed(data)
 
     def extract_keywords(self, data):
         """Extracts keywords for each article."""
@@ -113,3 +129,5 @@ if __name__ == "__main__":
                         database_name=ospath.join(test_config.HOME_DIR, "godseye-files/database.db"))
     
     CD.run()
+
+
