@@ -20,5 +20,5 @@ KEYWORDS = (
 
 FILE_TYPE_KEY = {
     "pubmed": ("PubmedArticleSet", "PubmedArticle"),
-    "medline": "MedlineCitationSet"
+    "medline": ("MedlineCitationSet", "MedlineCitation")
 }
