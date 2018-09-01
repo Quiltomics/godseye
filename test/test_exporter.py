@@ -129,5 +129,3 @@ if __name__ == "__main__":
                         database_name=ospath.join(test_config.HOME_DIR, "godseye-files/database.db"))
     
     CD.run()
-
-
