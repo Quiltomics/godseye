@@ -30,15 +30,17 @@ The main idea is to optimally segment the yearly data into smaller contiguous ti
 
 ## Future plans
 
-- [x] Implement dynamic programming algorithm to achieve optimal temporal segmentation
 - [x] Modularize Python code with OOP methods
+- [x] Analyze PDF/HTML contents of a PubMed or bioRxiv paper, not just its abstract, title, and author affiliations.  For this task, consider integrating existing tools like [fulltext](https://github.com/ropensci/fulltext), [pdftools](https://github.com/ropensci/pdftools), and [pubcrawl](https://github.com/hrbrmstr/pubcrawl)
+- [ ] Implement dynamic programming algorithm to achieve optimal temporal segmentation.  But also re-consider other algorithm choices (besides for temporal segmentation) because perhaps there are other more suitable (optimal) alternatives
+- [ ] Expand `godseye` into ML territory with [snorkel](http://mobilize.stanford.edu/events/snorkelworkshop2018/)
 - [ ] Implement graph database to understand the relation between any set of keywords over a time period or geographical region (e.g., the spatial and temporal evolution of keyword co-occurrences)
 
 ## Contact
 You are welcome to:
 
-* submit suggestions and bug-reports at: <https://github.com/Bioquilt/godseye/issues>
-* send a pull request on: <https://github.com/Bioquilt/godseye>
+* submit suggestions and bug-reports at: <https://github.com/Quiltomics/godseye/issues>
+* send a pull request on: <https://github.com/Quiltomics/godseye>
 * compose an e-mail to: <bohdan@stanford.edu>
 
 ## Code of conduct
